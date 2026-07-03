@@ -1,15 +1,63 @@
 classDiagram
-    %% Replace the placeholders below with your actual classes, attributes, methods, and relationships.
-    %% Keep this file updated so it matches your final implementation.
+    %% PawPal+ Class Diagram
+    %% Objects: Owner, Pet, Task, Schedule
 
-    class ClassName {
-        +type attribute
-        +method() returnType
+    class Owner {
+        +String name
+        +int available_hours_start
+        +int available_hours_end
+        +List~String~ preferences
+        +get_available_time() int
+        +get_preferences() List
+        +update_info(name, start, end) void
     }
 
-    class AnotherClass {
-        +type attribute
-        +method() returnType
+    class Pet {
+        +String name
+        +String species
+        +int age
+        +String breed
+        +List~String~ special_needs
+        +List~Task~ tasks
+        +get_info() String
+        +add_task(task) void
+        +remove_task(task_id) void
+        +list_tasks() List~Task~
+        +get_species() String
     }
 
-    ClassName --> AnotherClass : relationship
+    class Task {
+        +int id
+        +String title
+        +int duration_minutes
+        +String priority
+        +String category
+        +String description
+        +boolean is_recurring
+        +get_duration() int
+        +get_priority_level() int
+        +to_string() String
+        +is_high_priority() boolean
+    }
+
+    class Schedule {
+        +Pet pet
+        +Date date
+        +List~ScheduledTask~ scheduled_tasks
+        +int total_available_time
+        +int total_time_used
+        +String reasoning
+        +generate_schedule(tasks, constraints) void
+        +sort_tasks_by_priority(tasks) List~Task~
+        +check_time_conflicts(tasks) boolean
+        +fit_tasks_in_available_time(tasks, minutes) List~Task~
+        +display_plan() String
+        +get_reasoning() String
+        +is_schedule_valid() boolean
+    }
+
+    %% Relationships
+    Owner "1" --> "1..*" Pet : owns
+    Pet "1" --> "0..*" Task : has
+    Schedule "1" --> "1" Pet : plans for
+    Schedule "1" --> "0..*" Task : contains

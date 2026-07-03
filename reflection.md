@@ -2,6 +2,12 @@
 
 ## 1. System Design
 
+    When users first open PawPal+, they tell the app about themselves and their pet. They enter their name, their pet's name, what kind of animal they have, and any preferences they might have.
+
+    Users then add the different tasks their pet needs throughout the day—things like morning walks, feeding times, medication, playtime, or grooming. For each task, they specify how long it takes (in minutes) and how important it is (low, medium, or high priority). They can add as many tasks as they need.
+    
+    Once the user has entered their tasks, they can ask the app to generate a schedule for the day. The app then smartly organizes all the tasks into a realistic plan that respects time constraints and priorities. It shows the user when each task should happen and explains why it made those choices. 
+
 **a. Initial design**
 
 - Briefly describe your initial UML design.
