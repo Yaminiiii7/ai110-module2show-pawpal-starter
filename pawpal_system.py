@@ -3,7 +3,7 @@ PawPal+ System Classes
 Classes for managing pet care planning and scheduling.
 """
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 
@@ -111,16 +111,16 @@ class Task:
 
     _id_counter = 1  # Class variable for auto-incrementing IDs
 
-    def __init__(self, title: str, duration_minutes: int, priority: str, category: Optional[str] = None):
-        """
-        Initialize a Task.
-
-        Args:
-            title: Task name (e.g., "Morning walk")
-            duration_minutes: How long the task takes
-            priority: Priority level ("low", "medium", "high")
-            category: Task category (optional)
-        """
+    def __init__(
+        self,
+        title: str,
+        duration_minutes: int,
+        priority: str,
+        category: Optional[str] = None,
+        frequency: Optional[str] = None,
+        time_of_day: Optional[str] = None,
+    ):
+        """Initialize a task with optional timing and recurrence metadata."""
         self.id = Task._id_counter
         Task._id_counter += 1
         self.title = title
@@ -128,8 +128,11 @@ class Task:
         self.priority = priority.lower()
         self.category = category
         self.description = ""
-        self.is_recurring = False
+        self.is_recurring = bool(frequency)
         self.is_complete = False
+        self.frequency = frequency.lower() if frequency else "once"
+        self.time_of_day = time_of_day
+        self.pet_name: Optional[str] = None
 
     def get_duration(self) -> int:
         """Return the task duration in minutes."""
@@ -149,9 +152,23 @@ class Task:
         """Return True when the task has high priority."""
         return self.priority == "high"
 
-    def mark_complete(self) -> None:
-        """Mark the task as completed."""
+    def mark_complete(self) -> Optional["Task"]:
+        """Mark the task as completed and return a new recurring task when needed."""
         self.is_complete = True
+        if self.frequency in {"daily", "weekly"}:
+            next_task = Task(
+                self.title,
+                self.duration_minutes,
+                self.priority,
+                category=self.category,
+                frequency=self.frequency,
+                time_of_day=self.time_of_day,
+            )
+            next_task.pet_name = self.pet_name
+            if self.frequency == "daily":
+                next_task.description = f"Next occurrence for {self.title}"
+            return next_task
+        return None
 
 
 class Schedule:
@@ -215,16 +232,35 @@ class Schedule:
         )
 
     def sort_tasks_by_priority(self, tasks: List[Task]) -> List[Task]:
-        """
-        Sort tasks by priority (high to low).
-
-        Args:
-            tasks: List of tasks to sort
-
-        Returns:
-            Sorted list of tasks
-        """
+        """Sort tasks by priority (high to low)."""
         return sorted(tasks, key=lambda task: (-task.get_priority_level(), task.get_duration()))
+
+    def sort_by_time(self, tasks: List[Task]) -> List[Task]:
+        """Sort tasks by their scheduled time of day, using HH:MM values."""
+        return sorted(tasks, key=lambda task: task.time_of_day or "23:59")
+
+    def filter_tasks(self, tasks: List[Task], pet_name: Optional[str] = None, completed: Optional[bool] = None) -> List[Task]:
+        """Filter tasks by pet name and completion state."""
+        filtered_tasks = []
+        for task in tasks:
+            if pet_name is not None and task.pet_name != pet_name:
+                continue
+            if completed is not None and task.is_complete != completed:
+                continue
+            filtered_tasks.append(task)
+        return filtered_tasks
+
+    def detect_conflicts(self, tasks: List[Task]) -> List[str]:
+        """Return simple warnings when two tasks share the same time slot."""
+        warnings = []
+        seen = {}
+        for task in tasks:
+            key = task.time_of_day or "00:00"
+            if key in seen:
+                warnings.append(f"Conflict: {seen[key].title} and {task.title} both occur at {key}.")
+            else:
+                seen[key] = task
+        return warnings
 
     def check_time_conflicts(self, scheduled_tasks: List[tuple]) -> bool:
         """
