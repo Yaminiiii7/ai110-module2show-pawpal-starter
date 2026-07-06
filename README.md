@@ -63,19 +63,29 @@ Planned tasks: 5
 
 ## 🧪 Testing PawPal+
 
+Run the automated test suite with:
+
 ```bash
-# Run the full test suite:
-pytest
-
-# Run with coverage:
-pytest --cov
+python -m pytest
 ```
 
-Sample test output:
+The tests cover core behaviors such as task completion, pet task addition, chronological sorting, filtering by completion status, recurring-task creation, and conflict detection for duplicate times.
 
+Example output:
+
+```text
+============================= test session starts =============================
+platform win32 -- Python 3.10.0, pytest-9.1.1, pluggy-1.6.0
+rootdir: C:\Users\YAMI\OneDrive\Desktop\Codepath\project2\ai110-module2show-pawpal-starter
+collected 8 items
+
+test_pawpal_system.py ....                                               [ 50%]
+tests\test_pawpal.py ....                                                [100%]
+
+============================== 8 passed in 0.05s ==============================
 ```
-# Paste your pytest output here
-```
+
+Confidence level: ⭐⭐⭐⭐☆
 
 ## 📐 Smarter Scheduling
 

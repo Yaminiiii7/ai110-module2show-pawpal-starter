@@ -65,8 +65,8 @@ I'll decide on these changes as I implement the scheduling logic and discover wh
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+- The scheduler currently checks for exact time matches when detecting conflicts instead of comparing full overlapping intervals.
+- This tradeoff is reasonable for this project because the app is focused on lightweight daily planning, and exact-time conflict checks are simple, readable, and easy to explain to a pet owner.
 
 ---
 
