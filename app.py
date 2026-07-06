@@ -63,6 +63,7 @@ if owner.pets:
 
     if st.button("Add task"):
         task = Task(task_title, int(duration), priority)
+        task.pet_name = pet.name
         pet.add_task(task)
         st.session_state.owner = owner
         st.success(f"{task_title} added to {pet.name}.")
@@ -79,7 +80,23 @@ if st.button("Generate schedule"):
         for pet in owner.pets:
             all_tasks.extend(pet.list_tasks())
         scheduler.generate_schedule(all_tasks, owner)
-        st.write(scheduler.display_plan())
+
+        st.success("Schedule generated.")
+        st.text(scheduler.display_plan())
         st.caption(scheduler.get_reasoning())
+
+        all_tasks_for_view = [task for task in all_tasks if not task.is_complete]
+        sorted_tasks = scheduler.sort_by_time(all_tasks_for_view)
+        if sorted_tasks:
+            st.subheader("Sorted tasks")
+            st.table([{"Task": task.title, "Time": task.time_of_day or "Not set", "Pet": task.pet_name or "Unknown"} for task in sorted_tasks])
+
+        warnings = scheduler.detect_conflicts(all_tasks_for_view)
+        if warnings:
+            st.warning("Possible conflicts found:")
+            for warning in warnings:
+                st.write(f"- {warning}")
+        else:
+            st.info("No time conflicts detected.")
     else:
         st.info("Add a pet and some tasks to generate a schedule.")

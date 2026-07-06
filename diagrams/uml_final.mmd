@@ -1,0 +1,77 @@
+classDiagram
+    class Owner {
+        +String name
+        +int available_hours_start
+        +int available_hours_end
+        +List~String~ preferences
+        +List~Pet~ pets
+        +get_available_time() int
+        +get_preferences() List~String~
+        +update_info(name, start, end) void
+        +add_pet(pet) void
+        +get_all_tasks() List~Task~
+    }
+
+    class Pet {
+        +String name
+        +String species
+        +int age
+        +String breed
+        +List~String~ special_needs
+        +List~Task~ tasks
+        +get_info() String
+        +add_task(task) void
+        +remove_task(task_id) void
+        +list_tasks() List~Task~
+        +get_species() String
+    }
+
+    class Task {
+        +int id
+        +String title
+        +int duration_minutes
+        +String priority
+        +String category
+        +String description
+        +boolean is_recurring
+        +boolean is_complete
+        +String frequency
+        +String time_of_day
+        +String pet_name
+        +get_duration() int
+        +get_priority_level() int
+        +to_string() String
+        +is_high_priority() boolean
+        +mark_complete() Task
+    }
+
+    class Schedule {
+        +Pet pet
+        +Date date
+        +List~Tuple~ scheduled_tasks
+        +int total_available_time
+        +int total_time_used
+        +String reasoning
+        +generate_schedule(tasks, owner) void
+        +sort_tasks_by_priority(tasks) List~Task~
+        +sort_by_time(tasks) List~Task~
+        +filter_tasks(tasks, pet_name, completed) List~Task~
+        +detect_conflicts(tasks) List~String~
+        +check_time_conflicts(scheduled_tasks) boolean
+        +fit_tasks_in_available_time(tasks, minutes) List~Task~
+        +display_plan() String
+        +get_reasoning() String
+        +is_schedule_valid() boolean
+    }
+
+    class Scheduler {
+        +get_tasks_from_owner(owner) List~Task~
+        +build_plan_for_owner(owner, available_minutes) List~Task~
+        +add_pet_to_owner(owner, pet) void
+        +summarize_tasks(owner) String
+    }
+
+    Owner "1" --> "1..*" Pet : owns
+    Pet "1" --> "0..*" Task : contains
+    Schedule "1" --> "1" Pet : plans for
+    Scheduler --|> Schedule

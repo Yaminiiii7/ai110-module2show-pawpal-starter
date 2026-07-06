@@ -98,12 +98,20 @@ Confidence level: ⭐⭐⭐⭐☆
 
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+1. Open the Streamlit app and enter an owner name, then add one or more pets with their species and age.
+2. Add tasks for a selected pet, including a title, duration, and priority. These tasks are stored as real Task objects in the app session.
+3. Click Generate schedule to build a plan using the scheduler logic. The app shows the daily plan, a brief reasoning summary, and a sorted task view.
+4. If two tasks share the same time slot, the app displays a warning so the owner can adjust the plan before finalizing it.
+5. Recurring tasks can be marked complete and will create a new occurrence for the next cycle, making the planner feel more realistic for daily routines.
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+Example CLI output:
 
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+```text
+Today's Schedule for Jordan
+Daily plan for Mochi:
+1. 00:00 — Feed breakfast (10 min) [priority: high] [feeding]
+2. 00:10 — Feed dinner (10 min) [priority: high] [feeding]
+3. 00:20 — Morning walk (30 min) [priority: high] [exercise]
+4. 00:50 — Litter cleanup (15 min) [priority: medium] [care]
+5. 01:05 — Playtime (20 min) [priority: medium] [enrichment]
+```

@@ -74,13 +74,13 @@ I'll decide on these changes as I implement the scheduling logic and discover wh
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+- I used AI throughout the project for brainstorming the class design, generating the initial Python implementation, debugging the scheduler logic, and drafting tests.
+- The most helpful prompts were specific and focused, such as asking how the Scheduler should retrieve tasks from an Owner, how to structure recurring-task logic, and how to make the Streamlit UI reflect the backend features.
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+- I did not accept every AI suggestion as-is. For example, I adjusted an early draft of the recurring-task logic so it stayed simple and readable instead of adding overly abstract date handling.
+- I verified AI suggestions by running the CLI demo and the pytest suite so the final code was based on working behavior rather than just plausible ideas.
 
 ---
 
@@ -88,13 +88,13 @@ I'll decide on these changes as I implement the scheduling logic and discover wh
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+- I tested task completion behavior, pet task collection, chronological sorting, filtering by completion status, recurring-task creation, and conflict detection.
+- These tests matter because they cover the scheduling rules that most directly affect whether the app produces a useful daily plan.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+- I am confident that the core scheduling flow works for the planned scenarios because it is supported by automated tests and a working CLI demo.
+- If I had more time, I would test edge cases such as overlapping task durations, very large task lists, and tasks with missing or inconsistent time values.
 
 ---
 
@@ -102,12 +102,12 @@ I'll decide on these changes as I implement the scheduling logic and discover wh
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+- I am most satisfied with how the system moved from a simple class skeleton into a working scheduler that the UI and tests both use.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+- I would improve the scheduling model by adding more realistic overlap handling and a more detailed time-slot representation.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+- A useful lesson from this project is that clear object relationships make it much easier to connect the backend logic to both a CLI demo and a user-facing app.
